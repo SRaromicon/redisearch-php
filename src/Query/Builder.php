@@ -12,6 +12,8 @@ class Builder implements BuilderInterface
     const GEO_FILTER_UNITS = ['m', 'km', 'mi', 'ft'];
 
     protected $limit = '';
+    protected $limitOffset = '';
+    protected $limitPageSize = '';
     protected $slop = '';
     protected $verbatim = '';
     protected $withScores = '';
@@ -40,7 +42,9 @@ class Builder implements BuilderInterface
 
     public function limit(int $offset, int $pageSize = 10): BuilderInterface
     {
-        $this->limit = "LIMIT $offset $pageSize";
+        $this->limit = "LIMIT";
+        $this->limitOffset = $offset;
+        $this->limitPageSize = $pageSize;
         return $this;
     }
 
@@ -111,6 +115,8 @@ class Builder implements BuilderInterface
                 [$this->indexName, $query],
                 [
                     $this->limit,
+                    $this->limitOffset,
+                    $this->limitPageSize,
                     $this->slop,
                     $this->verbatim,
                     $this->withScores,
